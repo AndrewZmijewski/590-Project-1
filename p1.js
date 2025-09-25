@@ -92,7 +92,17 @@ function createModel() {
 // Task 1: Todo - put JS code below.
 // ----------------------------------------------
 
-
+function startGame() {
+  x_pacman = canvas.width/2;
+  y_pacman = canvas.height/2;
+  time_index = 0;
+  score = 0;
+  key = "ArrowRight";
+  paused = true;
+  createSnackPellets();
+  createModel();
+  createWalls();
+}
 
 
 
@@ -139,7 +149,8 @@ function keyEvent( event ) {
 // Task 4: Todo - put JS code below.
 // ----------------------------------------------
 
-
+startGame();
+setTimeout(draw, 100);
 
 
 
