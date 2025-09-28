@@ -128,7 +128,22 @@ function keyEvent( event ) {
   if (!paused){
     key=event.key;
   }
+
   
+}
+
+
+// ----------------------------------------------
+// Task 3: Todo - put JS code below.
+// ----------------------------------------------
+
+function draw(){
+  const scoreEl = document.getElementById('score');
+  scoreEl.innerText= "score: "+ String(score);
+  context2d.clearRect(0,0,canvas.width,canvas.height);
+  context2d.fillStyle = "black";
+  context2d.strokeStyle = "black";
+  context2d.save();
   let consumed_arr=[];
   for(let p=0;p<snack_pellets.length;p++){
     curr_p=snack_pellets[p];
@@ -175,21 +190,6 @@ function keyEvent( event ) {
   context2d.restore();
   time_index=(time_index+1)%4;
 
-  
-}
-
-
-// ----------------------------------------------
-// Task 3: Todo - put JS code below.
-// ----------------------------------------------
-
-function draw(){
-  const scoreEl = document.getElementById('score');
-  scoreEl.innerText= "score: "+ String(score);
-  context2d.clearRect(0,0,canvas.width,canvas.height);
-  context2d.fillStyle = "black";
-  context2d.strokeStyle = "black";
-  context2d.save();
 }
 
 
