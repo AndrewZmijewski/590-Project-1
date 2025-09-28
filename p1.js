@@ -117,11 +117,17 @@ function startGame() {
 document.addEventListener( "keyup", keyEvent );
 
 function keyEvent( event ) {
-  
+  if (event.key=='s'){
+    startGame();
+  }
 
+  if (event.key==' '){
+    paused=!paused;
+  }
 
-
-
+  if (!paused){
+    key=event.key;
+  }
 
 
 }
