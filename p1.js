@@ -97,6 +97,8 @@ function startGame() {
   y_pacman = canvas.height/2;
   time_index = 0;
   score = 0;
+  pacman_model=[];
+  snack_pellets=[];
   key = "ArrowRight";
   paused = true;
   createSnackPellets();
@@ -120,16 +122,12 @@ function keyEvent( event ) {
   if (event.key=='s'){
     startGame();
   }
-
   if (event.key==' '){
     paused=!paused;
   }
-
   if (!paused){
     key=event.key;
   }
-
-  
 }
 
 
@@ -139,26 +137,28 @@ function keyEvent( event ) {
 
 function draw(){
   const scoreEl = document.getElementById('score');
-  scoreEl.innerText= "score: "+ String(score);
+  scoreEl.innerText= String(score);
   context2d.clearRect(0,0,canvas.width,canvas.height);
+  context2d.save();
   context2d.fillStyle = "black";
   context2d.strokeStyle = "black";
-  context2d.save();
-  let consumed_arr=[];
+  let not_consumed=[];
   for(let p=0;p<snack_pellets.length;p++){
-    curr_p=snack_pellets[p];
+    let curr_p=snack_pellets[p];
     let hyp_calc=Math.abs(hypotenus((curr_p.x-x_pacman),(curr_p.y-y_pacman)));
     if (hyp_calc < (radius/2)){
-      consumed_arr.push(true);
       score+=10;
     } else{
-      consumed_arr.push(false);
+      not_consumed.push(curr_p);
+      context2d.fill(curr_p.circle);
     }
   }
+
+  snack_pellets=not_consumed;
   
   context2d.fillStyle='blue';
   for(let w=0;w<walls.length;w++){
-    curr_w=walls[w];
+    let curr_w=walls[w];
     context2d.fillRect(curr_w.x,curr_w.y,curr_w.width,curr_w.height);
   }
 
@@ -169,22 +169,28 @@ function draw(){
 
   context2d.translate(x_pacman,y_pacman);
 
-  if(!paused && (collidesWithWall(x_pacman,y_pacman)==false)){
+  let possible_x=x_pacman;
+  let possible_y=y_pacman;
+  if(!paused){
     if (key=="ArrowRight"){
       context2d.scale(1,1);
-      x_pacman+=displacement;
+      possible_x+=displacement;
     } else if (key=="ArrowLeft"){
       context2d.scale(-1,1);
-      x_pacman-=displacement;
+      possible_x-=displacement;
     } else if (key=="ArrowDown"){
       context2d.rotate(Math.PI/2);
-      y_pacman+=displacement;
+      possible_y+=displacement;
     } else if (key=="ArrowUp"){
       context2d.rotate(-Math.PI/2);
-      y_pacman-=displacement;
+      possible_y-=displacement;
     }
   }
-  
+  if(collidesWithWall(possible_x,possible_y)==false){
+    x_pacman=possible_x;
+    y_pacman=possible_y;
+  }
+  context2d.fillStyle='yellow';
   context2d.fill(pacman_model[time_index]);
   context2d.stroke(pacman_model[time_index]);
   context2d.restore();
@@ -209,7 +215,7 @@ function draw(){
 // ----------------------------------------------
 
 startGame();
-setTimeout(draw, 100);
+setInterval(draw, 100);
 
 
 
